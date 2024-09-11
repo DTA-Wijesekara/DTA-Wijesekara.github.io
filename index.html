@@ -12,13 +12,15 @@
         <div class="container">
             <nav>
                 <img src="images/logo.png" class="logo" alt="">
-                <ul>
+                <ul id="sidemenu">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">About</a></li>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Portfolio</a></li>
                     <li><a href="#">Contact</a></li>
+                    <i class="fa-solid fa-circle-xmark" onclick="closemenu()"></i>
                 </ul>
+                <i class="fa-solid fa-bars" onclick="openmenu()"></i>
             </nav>
             <div class="header-text">
                 <p>Undergraduate University Of Moratuwa</p>
@@ -35,7 +37,7 @@
                 </div>
                 <div class="about-col-2">
                     <h1 class="sub-title">About Me</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, sed magni at voluptatibus odit minima velit, aut natus ad eos vitae voluptatem sequi, molestiae cupiditate ea veritatis error repellat optio!</p>
+                    <p>Lorem ipsum dolor sit amet <br> Dolore, sed magni at voluptatibus o<br> error repellat optio!</p>
                     <div class="tab-titles">
                         <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
                         <p class="tab-links"onclick="opentab('experience')">Experience</p>
@@ -50,14 +52,14 @@
                     </div>
                     <div class="tab-contents" id="experience">
                         <ul>
-                            <li><span>UI/UX</span><br>Designing Web/App Interfaces</li>
+                            <li><span>UI/</span><br>Designing Web/App Interfaces</li>
                             <li><span>Web Development</span><br>Web App Development</li>
                             <li><span>Mobile App Development</span><br>Building Android/ios apps</li>
                         </ul>
                     </div>
                     <div class="tab-contents" id="education">
                         <ul>
-                            <li><span>UI/UX</span><br>Designing Web/App Interfaces</li>
+                            <li><span>U</span><br>Designing Web/App Interfaces</li>
                             <li><span>Web Development</span><br>Web App Development</li>
                             <li><span>Mobile App Development</span><br>Building Android/ios apps</li>
                         </ul>
@@ -174,6 +176,15 @@
         }
     </script>
 
+    <script>
+        var sidemenu = document.getElementById("sidemenu");
+        function openmenu(){
+            sidemenu.style.right = "0";
+        }
+        function closemenu(){
+            sidemenu.style.right = "-200px";
+        }
+    </script>
 
 
 </body>
