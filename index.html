@@ -3,216 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>personal portfolio website</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/ab87daddd2.js" crossorigin="anonymous"></script>
+    <title>Dasun Theekshana | Software Engineer</title>
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            --bg-color: #0d1117;       /* Dark GitHub-like background */
+            --card-bg: #161b22;        /* Slightly lighter card bg */
+            --text-primary: #f0f6fc;   /* Almost white text */
+            --text-secondary: #8b949e; /* Muted grey text */
+            --accent: #58a6ff;         /* Professional Blue */
+            --accent-glow: rgba(88, 166, 255, 0.15);
+            --border: #30363d;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+
+        /* --- 2. LAYOUT UTILITIES --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section { padding: 100px 0; }
+        
+        /* Section Headings */
+        h2 { 
+            font-size: 2rem; 
+            margin-bottom: 40px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px;
+            color: var(--text-primary);
+        }
+        
+        h2::after {
+            content: "";
+            display: block;
+            height: 1px;
+            background: var(--border);
+            flex: 1;
+            max-width: 300px;
+        }
+
+        h2 span { color: var(--accent); font-family: monospace; font-size: 1.5rem; }
+
+        /* --- 3. NAVIGATION (Glassmorphism) --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(13, 17, 23, 0.85); /* Semi-transparent */
+            backdrop-filter: blur(12px);       /* Blur effect */
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .logo span { color: var(--text-primary); }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Mobile Menu Button */
+        .menu-btn { display: none; cursor: pointer; font-size: 1.5rem; color: var(--text-primary); }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr; /* Text left, Image right */
+            align-items: center;
+            gap: 60px;
+        }
+
+        .hero-text span.greeting { color: var(--accent); font-family: monospace; font-size: 1.1rem; display: block; margin-bottom: 15px; }
+        .hero-text h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 10px; }
+        .hero-text h2 { 
+            font-size: 3rem; 
+            font-weight: 700; 
+            color: var(--text-secondary); 
+            border: none; 
+            margin-bottom: 25px;
+            display: block; 
+        }
+        .hero-text h2::after { display: none; } 
+
+        .hero-text p { 
+            font-size: 1.1rem; 
+            color: var(--text-secondary); 
+            max-width: 500px; 
+            margin-bottom: 40px; 
+        }
+
+        /* --- UPDATED IMAGE STYLE (Portrait Rectangle) --- */
+        .profile-img-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-img {
+            width: 300px;          
+            height: 380px;         /* Taller for portrait */
+            object-fit: cover;
+            border-radius: 12px;   /* Rounded Rectangle */
+            border: 1px solid var(--border);
+            box-shadow: 20px 20px 0px rgba(88, 166, 255, 0.1); /* Offset shadow effect */
+            transition: var(--transition);
+        }
+        
+        .profile-img:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 25px 25px 0px rgba(88, 166, 255, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background-color: rgba(88, 166, 255, 0.1); /* Subtle background */
+        }
+        
+        .btn:hover { background-color: rgba(88, 166, 255, 0.2); transform: translateY(-2px); }
+
+        /* --- 5. ABOUT & SKILLS --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 50px;
+        }
+
+        .skills-wrapper h3 { font-size: 1.1rem; margin-bottom: 20px; color: var(--text-primary); border-bottom: 1px solid var(--border); padding-bottom: 10px; display: inline-block;}
+        .skills-list { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
+        
+        .skill-tag {
+            background: rgba(88, 166, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-family: monospace;
+        }
+
+        /* --- 6. EXPERIENCE TIMELINE --- */
+        .timeline {
+            border-left: 2px solid var(--border);
+            padding-left: 40px;
+            position: relative;
+        }
+
+        .timeline-item { position: relative; margin-bottom: 50px; }
+        
+        /* The Dot */
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -49px; /* Aligns dot on line */
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            background: var(--bg-color);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+        }
+
+        .role { font-size: 1.3rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px; }
+        .company { color: var(--accent); font-weight: 500; font-size: 1.1rem; }
+        .date { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 15px; display: block; font-family: monospace; }
+        .desc { font-size: 1rem; color: var(--text-secondary); max-width: 700px; }
+
+        /* --- 7. PROJECTS GRID --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 6px;
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid transparent;
+        }
+
+        .project-card:hover { 
+            transform: translateY(-7px); 
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+        }
+
+        .folder-icon { width: 40px; height: 40px; stroke: var(--accent); margin-bottom: 25px; }
+        
+        .project-header { display: flex; justify-content: space-between; align-items: start; }
+        .project-links a { color: var(--text-secondary); margin-left: 15px; }
+        .project-links a:hover { color: var(--accent); }
+
+        .project-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
+        .project-desc { font-size: 1rem; color: var(--text-secondary); margin-bottom: 25px; flex-grow: 1; }
+        
+        .project-tech { 
+            font-size: 0.8rem; 
+            font-family: monospace; 
+            color: var(--text-secondary); 
+            display: flex; 
+            gap: 15px; 
+            margin-top: auto; 
+            flex-wrap: wrap;
+        }
+
+        /* --- 8. FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 50px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .social-links { margin-bottom: 20px; }
+        .social-links a { margin: 0 15px; font-size: 1.2rem; }
+        .social-links a:hover { color: var(--accent); }
+
+        /* --- 9. RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; 
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                flex-direction: column;
+                padding: 30px;
+                border-bottom: 1px solid var(--border);
+                text-align: center;
+            }
+            .nav-links.active { display: flex; }
+            .menu-btn { display: block; }
+            
+            .hero-content { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .hero-content { display: flex; flex-direction: column-reverse; } 
+            
+            .hero-text h1 { font-size: 2.5rem; }
+            .hero-text h2 { font-size: 2rem; }
+            .hero-text p { margin: 20px auto; }
+            
+            .about-grid { grid-template-columns: 1fr; }
+            
+            .profile-img { width: 260px; height: 320px; } /* Slightly smaller on mobile */
+        }
+    </style>
 </head>
 <body>
-    <div id="header">
+
+    <header>
         <div class="container">
             <nav>
-                <img src="images/logo3.png" class="logo" alt="">
-                <ul id="sidemenu">
-                    <li><a href="#header">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <i class="fa-solid fa-circle-xmark" onclick="closemenu()"></i>
-                </ul>
-                <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+                <a href="#" class="logo"><span>Dasun</span>Theekshana</a>
+                <div class="menu-btn" onclick="toggleMenu()">&#9776;</div>
+                <div class="nav-links" id="navLinks">
+                    <a href="#about" onclick="toggleMenu()">About</a>
+                    <a href="#experience" onclick="toggleMenu()">Experience</a>
+                    <a href="#projects" onclick="toggleMenu()">Projects</a>
+                    <a href="#contact" onclick="toggleMenu()">Contact</a>
+                    <a href="Dasun Theekshana CV.pdf" target="_blank" class="btn" style="padding: 8px 16px; margin: 0;">Resume</a>
+                </div>
             </nav>
-            <div class="header-text">
-                <h1>Hi, I'm <span>Dasun Theekshana</span></h1>
-                <p>Undergraduate University Of Moratuwa</p>
-            </div>
         </div>
-    </div>
-    <!-- ------------------about------------------- -->
-    <div id="about">
-        <div class="container">
-            <div class="row">
-                <div class="about-col-1">
-                    <img src="images/user2.jpg" alt="">
-                </div>
-                <div class="about-col-2">
-                    <h1 class="sub-title">About Me</h1>
-                    <p>A passionate, enthusiastic, and skilled undergraduate who is committed to working smart to achieve goals and willing to take on any challenge. Moreover, a responsible team player with solid and friendly leadership qualities and a good team spirit who can adapt and focus on any productive targets, seeking an opportunity as a software engineer intern to apply and explore existing and emerging technologies in the field of Information Technology.</p>
-                    <div class="tab-titles">
-                        <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-                        <p class="tab-links"onclick="opentab('experience')">Experience</p>
-                        <p class="tab-links"onclick="opentab('education')">Education</p>
-                    </div>
-                    <div class="tab-contents active-tab" id="skills">
-                        <ul>
-                            <li><span>programming Languages</span><br>java , c# , c</li>
-                            <li><span>Web Development</span><br>.NET , Angular</li>
-                            <li><span>Mobile App Development</span><br>Flutter</li>
-                            <li><span>Database</span><br>MySQL , MSSQL</li>
-                            <li><span>Version Control</span><br>Git</li>
-                            <li><span>Project Management Tools</span><br>Trello</li>
-                            <li><span>IDEs</span><br>Visual studio , Visual studio Code , IntelliJ , CLion ,CodeBlocks ,Android Studio</li>
-                        </ul>
-                    </div>
-                    <div class="tab-contents" id="experience">
-                        <ul>
-                            <p class="infi"><i class="fa-solid fa-infinity"></i></p>
-                            <li><span>Corzent LLC</span><br>we developed 'Entrapose Asset Management System,' a web application designed to manage and track company assets. The system facilitates the complete asset lifecycle, including the disposal and subsequent sale of assets.</li>
-                        </ul>
-                    </div>
-                    <div class="tab-contents" id="education">
-                        <ul>
-                            <li><span>Undergraduate University of Moratuwa</span><br>I am a third-year undergraduate pursuing a Bachelor of Science (Honours) in Information Technology at the Faculty of Information Technology, University of Moratuwa.</li>
-                            <li><span>GCE Advanced Level</span><br>I completed my Advanced Level examination in the Biological Science stream at Hungama Vijayaba National School, obtaining an A in Chemistry, and Bs in Physics and Biology.</li>
-                            <li><span>GCE Ordinary Level</span><br>I achieved 7 As and 2 Bs in my Ordinary Level examination at Hungama Vijayaba National School.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- --------------services------------------ -->
-    <div id="services">
-        <div class="container">
-            <h1 class="sub-title">My Services</h1>
-            <div class="services-list">
-                <div>
-                    <i class="fa-solid fa-code"></i>
-                    <h2>Web Design</h2>
-                    <p>We craft custom web applications using the latest technologies, turning your ideas into powerful, high-performing digital solutions.</p>
-                    <a href="#">Learn more</a>
-                </div>
-                <div>
-                    <i class="fa-solid fa-laptop-code"></i>
-                    <h2>Mobile App Design</h2>
-                    <p>I bring your mobile app ideas to life with custom cross-platform development, delivering innovative solutions that perfectly align with your vision and business goals.</p>
-                    <a href="#">Learn more</a>
-                </div>
-                <!-- <div>
-                    <i class="fa-brands fa-codepen"></i>
-                    <h2>app development</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque nihil quis beatae nobis, dicta hic, illum asperiores tempora ea eligendi impedit accusamus incidunt mollitia officia! Molestiae ratione autem similique itaque.</p>
-                    <a href="#">Learn more</a>
-                </div> -->
-            </div>
-        </div>
-    </div>
-    <!--------------portfolio-------------->
-    <div id="portfolio">
-        <div class="container">
-            <h1 class="sub-title">My Work</h1>
-            <div class="work-list">
-                <div class="work">
-                    <img src="images/work-1.png" alt="">
-                    <div class="layer">
-                        <h3>Entrapise Asset Management System</h3>
-                        <p>Developed an Enterprise Asset Management System designed to efficiently manage and track company assets throughout their lifecycle. The system includes features for asset management, tracking, and disposal, with the capability to facilitate the sale of assets post-disposal.
+    </header>
 
-                            <br>Technologies Used:
-                            
-                            <br>Frontend: Angular
-                            <br>Backend: .NET
-                            <br>Database: MSSQL
-                            <br>Architecture: Microservices</p>
-                        <a href="#"><i class="fa-solid fa-link"></i></a>
-                    </div>
-                </div>
-                <div class="work">
-                    <img src="images/work-2.png" alt="">
-                    <div class="layer">
-                        <h3>Foot Relaxing Machine</h3>
-                        <p>A innovative hardware solution for foot pain: The Arduino-powered foot relaxing machine! 🦶💡 Experience rhythmic foot movements, pain-relieving spray, and soothing hot air flow. Powered by 12V gear motors, BTS 7960 driver, temperature sensor, Arduino Mega, Peltier module, and mist maker module, water level sensor. </p>
-                        <a href="#"><i class="fa-solid fa-link"></i></a>
-                    </div>
-                </div>
-                <div class="work">
-                    <img src="images/work-3.png" alt="">
-                    <div class="layer">
-                        <h3>Portfolio site</h3>
-                        <p>Developed a personal portfolio website to showcase my projects, skills, and professional journey. The site is designed with a focus on clean aesthetics, responsive design, and user-friendly navigation. It features an interactive interface with sections for my work experience, education, technical skills, and personal achievements. Built using modern web technologies, including HTML, CSS, and JavaScript, the portfolio demonstrates my ability to create dynamic, scalable, and visually appealing web applications. The website is deployed on GitHub Pages and Vercel, ensuring easy access and continuous availability.</p>
-                        <a href="#"><i class="fa-solid fa-link"></i></a>
-                    </div>
-                </div>
-            </div>
-            <a href="#" class="btn">See Mores</a>
-        </div>
-    </div>
-    <!-- ----------------contact-------------- -->
-     <div id="contact">
+    <section class="hero">
         <div class="container">
-            <div class="row">
-                <div class="contact-left">
-                    <h1 class="sub-title">Contact Me</h1>
-                    <p><i class="fa-solid fa-paper-plane"></i>dasuntheekshan@gmail.com</p>
-                    <p><i class="fa-solid fa-square-phone"></i>0718533408</p>
-                    <div class="social-icons">
-                        <a href="#https://www.facebook.com/profile.php?id=100080870563523"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="#https://www.instagram.com/dasun_wijesekara/"><i class="fa-brands fa-square-instagram"></i></a>
-                        <a href="#https://www.linkedin.com/in/dasuntheek/"><i class="fa-brands fa-linkedin"></i></a>
-                        <a href="#https://github.com/DTA-Wijesekara"><i class="fa-brands fa-github"></i></a>
-                        <a href="#https://medium.com/@dasuntheekshan"><i class="fa-brands fa-medium"></i></a>
-                        <a href="#https://stackoverflow.com/users/22367776/dasun-theekshana"><i class="fa-brands fa-stack-overflow"></i></a>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="greeting">Hi, my name is</span>
+                    <h1>Dasun Theekshana.</h1>
+                    <h2>I build scalable systems.</h2>
+                    <p>
+                        I am a software engineering undergraduate at the University of Moratuwa. 
+                        I specialize in full-stack development with <b>.NET</b> and <b>React</b>, 
+                        building microservices and cloud-native applications.
+                    </p>
+                    <div>
+                        <a href="#projects" class="btn btn-primary">Check out my work</a>
+                        <a href="mailto:dasuntheekshan@gmail.com" class="btn">Get in touch</a>
                     </div>
-                    <a href="images/my-cv.pdf" download class="btn btn2">Download CV</a>
                 </div>
-                <div class="contact-right">
-                    <form name="submit-to-google-sheet">
-                        <input type="text" name="Name" id="" placeholder="Your Name" required>
-                        <input type="Email" name="Email" id="" placeholder="Your Email" required>
-                        <textarea name="Message" id="" rows="6" placeholder="Your Message"></textarea>
-                        <button type="submit" class="btn btn2">Submit</button>
-                    </form>
-                    <div id="msg"></div>
+                <div class="profile-img-container">
+                    <img src="profile.jpg" alt="Dasun Theekshana" class="profile-img">
                 </div>
             </div>
         </div>
-        <div class="copyright">
-            <p>Copyright <i class="fa-regular fa-copyright"></i> Dasun</p>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2><span>01.</span> About Me</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                        Hello! My name is Dasun and I enjoy creating software that solves real-world problems. 
+                        My journey started in 2020, and I am now an undergraduate at the University of Moratuwa 
+                        with industry experience.
+                    </p>
+                    <p style="color: var(--text-secondary);">
+                        I have a strong background in both <b>Backend</b> and <b>Frontend</b> development. 
+                        I am currently looking for opportunities to work with experienced teams on challenging projects.
+                    </p>
+                </div>
+                <div class="skills-wrapper">
+                    <h3>Frontend</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Angular</span>
+                        <span class="skill-tag">Tailwind CSS</span>
+                        <span class="skill-tag">Flutter</span>
+                    </div>
+                    <h3>Backend & Cloud</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">.NET Core</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Azure</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">MSSQL</span>
+                    </div>
+                </div>
+            </div>
         </div>
-     </div>
+    </section>
+
+    <section id="experience">
+        <div class="container">
+            <h2><span>02.</span> Experience</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <div class="role">Software Engineer Intern</div>
+                    <div class="company">Arithmos Pvt. Ltd</div>
+                    <span class="date">Feb 2025 – Sep 2025</span>
+                    <p class="desc">
+                        Contributed to enterprise software solutions using .NET and React. 
+                        Gained hands-on experience in the full software development lifecycle (SDLC) 
+                        and collaborated with senior engineers on backend services.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="role">Software Engineer (Part-Time)</div>
+                    <div class="company">Certdirectory.io</div>
+                    <span class="date">Apr 2025 – Dec 2025</span>
+                    <p class="desc">
+                        Assisted in the maintenance and feature enhancement of web applications. 
+                        Worked on backend optimization and database management to improve system performance.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2><span>03.</span> Featured Projects</h2>
+            <div class="project-grid">
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <svg class="folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        <div class="project-links">
+                            <a href="https://github.com/DTA-Wijesekara/payrallbackend" target="_blank" title="GitHub"><svg style="width: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 1.19 6.44 7a3.37 3.37 0 0 0-.94 2.58v.87"></path></svg></a>
+                        </div>
+                    </div>
+                    <div class="project-title">Payroll Management System</div>
+                    <p class="project-desc">
+                        A full-stack system automating salary reports, leave, and loan management.
+                    </p>
+                    <div class="project-tech">
+                        <span>.NET</span><span>React</span><span>MSSQL</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <svg class="folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        <div class="project-links">
+                            <a href="https://github.com/orgs/ProgEmpowers" target="_blank"><svg style="width: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 1.19 6.44 7a3.37 3.37 0 0 0-.94 2.58v.87"></path></svg></a>
+                        </div>
+                    </div>
+                    <div class="project-title">Asset Management System</div>
+                    <p class="project-desc">
+                        Microservices-based asset tracking with an API Gateway and JWT authentication.
+                    </p>
+                    <div class="project-tech">
+                        <span>Angular</span><span>.NET</span><span>Microservices</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <svg class="folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        <div class="project-links">
+                            <a href="https://github.com/orgs/Codimates/repositories" target="_blank"><svg style="width: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 1.19 6.44 7a3.37 3.37 0 0 0-.94 2.58v.87"></path></svg></a>
+                        </div>
+                    </div>
+                    <div class="project-title">Lap Lanka Sales</div>
+                    <p class="project-desc">
+                        Laptop sales platform with CI/CD pipelines, Docker deployment, and unit testing.
+                    </p>
+                    <div class="project-tech">
+                        <span>Node.js</span><span>Docker</span><span>CI/CD</span>
+                    </div>
+                </div>
+                
+                 <div class="project-card">
+                    <div class="project-header">
+                        <svg class="folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        <div class="project-links">
+                            <a href="https://github.com/DTA-Wijesekara/Foot-relaxing-machine" target="_blank"><svg style="width: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 1.19 6.44 7a3.37 3.37 0 0 0-.94 2.58v.87"></path></svg></a>
+                        </div>
+                    </div>
+                    <div class="project-title">IoT Foot Relaxer</div>
+                    <p class="project-desc">
+                        Microcontroller-based massaging machine with heat and pain relief spray functions.
+                    </p>
+                    <div class="project-tech">
+                        <span>Arduino</span><span>C++</span><span>IoT</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <div class="container">
+            <p style="color: var(--accent); margin-bottom: 20px; font-family: monospace;">What's Next?</p>
+            <h2 style="justify-content: center; border: none; font-size: 3rem; margin-bottom: 20px;">Get In Touch</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 40px; font-size: 1.1rem;">
+                I am currently looking for new opportunities as a Software Engineer. 
+                Whether you have a question or just want to say hi, my inbox is always open!
+            </p>
+            <a href="mailto:dasuntheekshan@gmail.com" class="btn btn-primary">Say Hello</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://linkedin.com/in/dasuntheek" target="_blank" title="LinkedIn">LinkedIn</a>
+                <a href="https://github.com/DTA-Wijesekara" target="_blank" title="GitHub">GitHub</a>
+            </div>
+            <p>&copy; 2026 Dasun Theekshana. Built with code.</p>
+        </div>
+    </footer>
 
     <script>
-        var tablinks = document.getElementsByClassName("tab-links");
-        var tabcontents = document.getElementsByClassName("tab-contents");
-
-        function opentab(tabname){
-            for(tablink of tablinks){
-                tablink.classList.remove("active-link");
-            }
-            for(tabcontent of tabcontents){
-                tabcontent.classList.remove("active-tab");
-            }
-            event.currentTarget.classList.add("active-link");
-            document.getElementById(tabname).classList.add("active-tab");
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            nav.classList.toggle('active');
         }
     </script>
-
-    <script>
-        var sidemenu = document.getElementById("sidemenu");
-        function openmenu(){
-            sidemenu.style.right = "0";
-        }
-        function closemenu(){
-            sidemenu.style.right = "-200px";
-        }
-    </script>
-
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyB1lMSs8DCNgZlUWbFnuDJpJAFnCDa0wpW3Z2KMwEUyVhpziAcVg5tGpXxFQIghF6y/exec'
-    const form = document.forms['submit-to-google-sheet']
-    const msg = document.getElementById("msg")
-  
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {msg.innerHTML = "Message Sent Successfully"})
-        .catch(error => console.error('Error!', error.message))
-        setTimeout(function(){
-            msg.innerHTML =""
-        },5000)
-        form.reset()
-    })
-  </script>
-
 </body>
 </html>
